@@ -1,6 +1,7 @@
 {
   "name": "challenge-full-stack-web",
   "version": "1.0.0",
+  "type": "module",
   "description": "GrupoA Educação - Full Stack Web Developer\r ===================",
   "main": "index.js",
   "scripts": {
