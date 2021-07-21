@@ -1,0 +1,33 @@
+{
+  "name": "challenge-full-stack-web",
+  "version": "1.0.0",
+  "description": "GrupoA Educação - Full Stack Web Developer\r ===================",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariscafe/challenge-full-stack-web.git"
+  },
+  "author": "Maricelia Ferreira",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mariscafe/challenge-full-stack-web/issues"
+  },
+  "homepage": "https://github.com/mariscafe/challenge-full-stack-web#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5"
+  },
+  "devDependencies": {
+    "husky": "^7.0.1",
+    "jest": "^27.0.6",
+    "lint-staged": "^11.0.1",
+    "nodemon": "^2.0.12",
+    "standard": "^16.0.3"
+  }
+}
