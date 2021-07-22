@@ -1,7 +1,6 @@
 {
   "name": "challenge-full-stack-web",
   "version": "1.0.0",
-  "type": "module",
   "description": "GrupoA Educação - Full Stack Web Developer\r ===================",
   "main": "index.js",
   "scripts": {
@@ -15,6 +14,7 @@
   },
   "author": "Maricelia Ferreira",
   "license": "ISC",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/mariscafe/challenge-full-stack-web/issues"
   },
