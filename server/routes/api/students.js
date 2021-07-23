@@ -1,29 +1,34 @@
-import { Router } from 'express'
+const Router = require('express')
+const Students = require('../../controllers/student.controller.js')
 
 const studentsRouter = Router()
 
 // Get Students
-studentsRouter.get('/', async (req, res) => {
-  return res.status(200).send('Students List')
+studentsRouter.get('/list', async (req, res) => {
+  Students.list(req, res)
 })
 
-studentsRouter.get('/:id', async (req, res) => {
-  return res.status(200).send('Student Data')
+studentsRouter.get('/find/:cpf', async (req, res) => {
+  Students.find(req, res)
+})
+
+studentsRouter.get('/search/:filter', async (req, res) => {
+  Students.search(req, res)
 })
 
 // Add Student
-studentsRouter.post('/', async (req, res) => {
-  return res.status(201).send('Student Inserted')
+studentsRouter.post('/insert', async (req, res) => {
+  Students.insert(req, res)
 })
 
 // Update Student
-studentsRouter.put('/:id', async (req, res) => {
-  return res.status(200).send('Student Updated')
+studentsRouter.put('/update/:cpf', async (req, res) => {
+  Students.update(req, res)
 })
 
 // Delete Student
-studentsRouter.delete('/:id', async (req, res) => {
-  return res.status(200).send('Student Deleted')
+studentsRouter.delete('/delete/:cpf', async (req, res) => {
+  Students.delete(req, res)
 })
 
-export { studentsRouter }
+module.exports = studentsRouter
