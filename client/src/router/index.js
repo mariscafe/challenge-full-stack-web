@@ -7,16 +7,22 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    alias: '/home',
     name: 'Home',
     component: Home
   },
   {
-    path: '/about',
-    name: 'About',
+    path: '/studentsGrid',
+    name: 'StudentsGrid',
     // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
+    // this generates a separate chunk (studentsGrid.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import(/* webpackChunkName: "studentsGrid" */ '../views/studentsGrid.vue')
+  },
+  {
+    path: '/studentsForm',
+    name: 'StudentsForm',
+    component: () => import('../views/studentsForm.vue')
   }
 ]
 
