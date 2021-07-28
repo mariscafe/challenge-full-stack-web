@@ -12,24 +12,26 @@
         dense
         class="d-inline-block pr-2"
         ></v-text-field>
-        <v-btn depressed class="custom-button" color="primary" v-on:click="search()">Pesquisar</v-btn>
+        <v-btn depressed class="custom-button" color="primary" @click="searchStudents()">Pesquisar</v-btn>
       </v-col>
     </v-row>
  
     <v-row>
       <v-col class="col-12">
-        <v-btn depressed class="custom-button" color="primary" v-on:click="navegateTo('studentsForm')">
+        <v-btn depressed class="custom-button" color="primary" @click="navegateTo('studentsForm')">
           <v-icon left> mdi-plus </v-icon>
           Cadastrar Aluno
         </v-btn>
       </v-col>
       <v-col class="col-12">
+        <AlertDialog ref="alert" />
         <v-data-table
           :headers="headers"
           :items="students"
           :page.sync="page"
           :items-per-page="itemsPerPage"
           hide-default-footer
+          no-data-text="Registro(s) não encontrado(s)."
           class="elevation-1"
           @page-count="pageCount = $event"
         >
@@ -37,8 +39,9 @@
             <router-link :to="{ name: 'StudentsForm', params: { cpf: item.cpf } }">
               <v-icon left> mdi-pencil </v-icon>
             </router-link>
-            <v-icon left> mdi-delete </v-icon>
+            <v-icon left @click="deleteStudent(item.cpf)"> mdi-delete </v-icon>
           </template>
+        
         </v-data-table>
         <div class="text-center pt-2">
           <v-pagination
@@ -48,14 +51,20 @@
         </div>
       </v-col>
     </v-row>
+    <ConfirmDialog ref="confirm" />
   </div>
 </template>
 
 <script>
 import navegateTo from '@/mixins/navegateTo'
+import StudentService from '@/services/StudentService'
 
 export default {
   mixins: [navegateTo],
+  components: {
+    ConfirmDialog: () => import("@/components/ConfirmDialog"),
+    AlertDialog: () => import("@/components/AlertDialog"),
+  },
   data () {
     return {
       filter: '',
@@ -72,35 +81,65 @@ export default {
     }
   },
   methods: {
-    async search() {
-      // TO DO: Search students
-      this.students = [{
-        register: '123456',
-        cpf: '99999999991',
-        name: 'Aluno 1', 
-      }]
+    async listStudents () {
+      try{
+        const response = await StudentService.listStudents()
+
+        if(response.error){
+          this.$refs.alert.show('error', response.message, true)
+        } else {
+          this.$refs.alert.hide()
+          this.students = response.data
+        }
+      } catch (err) {
+        this.$refs.alert.show('error', err.message, true)
+      }
     },
-    async loadStudents() {
-      // TO DO: Load students
-      this.students = [{
-        register: '123456',
-        cpf: '99999999991', 
-        name: 'Aluno 1',
-      },
-      {
-        register: '123457',
-        cpf: '99999999992',
-        name: 'Aluno 2',
-      },
-      {
-        register: '123458',
-        cpf: '99999999993',
-        name: 'Aluno 3',
-      }]
+    async searchStudents () {
+      try{
+        if(!this.filter){
+          this.listStudents()
+          return
+        }
+
+        const response = await StudentService.searchStudents(this.filter)
+
+        if(response.error){
+          this.$refs.alert.show('error', response.message, true)
+
+          this.students = []
+        } else {
+          this.$refs.alert.hide()
+          
+          this.students = response.data
+        }
+      } catch (err) {
+        this.$refs.alert.show('error', err.message, true)
+      }
     },
+    async deleteStudent (cpf) {
+      if (
+        await this.$refs.confirm.open(
+          "Excluir",
+          "Tem certeza que deseja excluir o aluno?"
+        )
+      ) {
+        try {
+          const response = await StudentService.deleteStudent(cpf)
+
+          if(response.error){
+             this.$refs.alert.show('error', response.message, true)
+          } else {
+            this.listStudents()
+          }
+        } catch (err) {
+          this.$refs.alert.show('error', err.message, true)
+        }
+      }
+    }
   },
-  created () {
-    this.loadStudents()
+  mounted () {
+    this.listStudents()
   }
 }
 </script>

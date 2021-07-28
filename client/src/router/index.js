@@ -22,7 +22,7 @@ const routes = [
   {
     path: '/studentsForm',
     name: 'StudentsForm',
-    component: () => import('../views/studentsForm.vue')
+    component: () => import(/* webpackChunkName: "studentsForm" */ '../views/studentsForm.vue')
   }
 ]
 

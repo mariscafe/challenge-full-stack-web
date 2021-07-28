@@ -3,12 +3,7 @@
     <h1>Alunos - Cadastro</h1>
     <v-row>
       <v-col class="col-12 ">
-        <v-alert
-          v-if="message.show"
-          v-bind:type="message.type"
-          dense
-          text
-        >{{ message.text }}</v-alert>
+        <AlertDialog ref="alert" />
       </v-col>
       
       <v-col class="col-12">
@@ -54,11 +49,11 @@
       </v-col>
 
       <v-col class="col-12 text-center">
-        <v-btn depressed class="custom-button" color="secondary" v-on:click="cancel()">
+        <v-btn depressed class="custom-button" color="secondary" @click="cancel()">
           <v-icon left> mdi-cancel </v-icon>
           Cancelar
         </v-btn>
-        <v-btn depressed class="custom-button" color="success" v-on:click="validate()">
+        <v-btn depressed class="custom-button" color="success" @click="validate()">
           <v-icon left> mdi-content-save </v-icon>
           Salvar
         </v-btn>
@@ -70,19 +65,16 @@
 
 <script>
 import navegateTo from '@/mixins/navegateTo'
+import StudentService from '@/services/StudentService'
 
 export default {
   mixins: [navegateTo],
   components: {
     ConfirmDialog: () => import("@/components/ConfirmDialog"),
+    AlertDialog: () => import("@/components/AlertDialog"),
   },
   data: () => ({
     edit: false,
-    message: {
-      show: false,
-      type: '',
-      text: ''
-    },
     student: {
       cpf: '',
       name: '',
@@ -91,7 +83,7 @@ export default {
     },
     nameRules: [
       v => !!v || 'Campo obrigatório',
-      v => (v && v.length >= 120) || 'Nome deve possuir no máximo 120 caracteres',
+      v => (v && v.length <= 120) || 'Nome deve possuir no máximo 120 caracteres',
     ],
     emailRules: [
       v => !!v || 'Campo obrigatório',
@@ -109,55 +101,61 @@ export default {
     ]
   }),
   methods: {
-    validate() {
+    validate () {
       if(this.$refs.form.validate()){
-        this.save()
+        this.save(this.student.cpf)
       }
     },
-    async loadStudent(cpf) {
+    async loadStudent (cpf) {
       try{
-        //TO DO: Load register
+        const response = await StudentService.findStudents(cpf)
 
-        this.student.cpf = cpf
+        if(response.error){
+          this.$refs.alert.show('error', response.message)
+        } else {
+          this.student = response.data[0]
+        }
       }
       catch(err){
-        this.message.show = true
-        this.message.type = 'error'
-        this.message.text = err.message
+        this.$refs.alert.show('error', err.message)
       }
     },
     async cancel() {
       if (
         await this.$refs.confirm.open(
           "Cancelar",
-          "Cancelar operação e voltar a tela anterior?"
+          "Voltar a tela anterior? Alterações não salvas serão perdidas."
         )
       ) {
         this.navegateTo('studentsGrid')
       }
     },
-    async save() {
+    async save(cpf) {
       try{
-        if(this.edit = true){
-          // TO DO: Update register
+        if(this.edit === true){
+          const response = await StudentService.updateStudent(cpf, this.student)
 
-          this.message.text = 'Registro atualizado com sucesso'
+          if(response.error){
+            this.$refs.alert.show('error', response.message)
+          } else {
+            this.$refs.alert.show('success', 'Registro atualizado com sucesso')
+          }
         } else{
-          // TO DO: Insert register
+          const response = await StudentService.insertStudent(this.student)
 
-          this.message.text = 'Registro inserido com sucesso'
+          if(response.error){
+            this.$refs.alert.show('error', response.message)
+          } else {
+            this.edit = true
+            this.$refs.alert.show('success', 'Registro inserido com sucesso')
+          }
         }
-
-        this.message.show = true
-        this.message.type = 'success'
       } catch(err){
-        this.message.show = true
-        this.message.type = 'error'
-        this.message.text = err.message
+        this.$refs.alert.show('error', err.message)
       }
     },
   },
-  created () {
+  mounted () {
     if(this.$route.params.cpf){
       this.edit = true
       this.loadStudent(this.$route.params.cpf)

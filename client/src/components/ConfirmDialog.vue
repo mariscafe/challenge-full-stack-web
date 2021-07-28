@@ -41,6 +41,7 @@
 <script>
   export default {
     name: "ConfirmDialog",
+    
     data() {
       return {
         dialog: false,
@@ -50,7 +51,7 @@
         title: null,
         options: {
           color: "grey lighten-3",
-          width: 400,
+          width: 500,
           zIndex: 200,
           noconfirm: false,
         },
@@ -77,5 +78,5 @@
         this.dialog = false;
       },
     },
-  };
+  }
 </script>
