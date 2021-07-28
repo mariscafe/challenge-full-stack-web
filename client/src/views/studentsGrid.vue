@@ -91,8 +91,8 @@ export default {
           this.$refs.alert.hide()
           this.students = response.data
         }
-      } catch (err) {
-        this.$refs.alert.show('error', err.message, true)
+      } catch (error) {
+        this.$refs.alert.show('error', error.message, true)
       }
     },
     async searchStudents () {
@@ -106,15 +106,18 @@ export default {
 
         if(response.error){
           this.$refs.alert.show('error', response.message, true)
-
           this.students = []
         } else {
-          this.$refs.alert.hide()
-          
-          this.students = response.data
+          if(response.data.length === 0){
+            this.$refs.alert.show('error', `Nenhum aluno encontrado para o filtro '${this.filter}'`, true)
+            this.students = []
+          } else {
+            this.$refs.alert.hide()
+            this.students = response.data
+          }
         }
-      } catch (err) {
-        this.$refs.alert.show('error', err.message, true)
+      } catch (error) {
+        this.$refs.alert.show('error', error.message, true)
       }
     },
     async deleteStudent (cpf) {
@@ -132,8 +135,8 @@ export default {
           } else {
             this.listStudents()
           }
-        } catch (err) {
-          this.$refs.alert.show('error', err.message, true)
+        } catch (error) {
+          this.$refs.alert.show('error', error.message, true)
         }
       }
     }

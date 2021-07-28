@@ -9,10 +9,10 @@ class StudentService {
 
     try {
       return await axios.get(url).then(response => response.data).catch(error => error.response.data)
-    } catch (err) {
+    } catch (error) {
       return [{
         error: true,
-        message: err.message
+        message: error.message
       }]
     }
   }
@@ -22,10 +22,10 @@ class StudentService {
 
     try {
       return await axios.get(url).then(response => response.data).catch(error => error.response.data)
-    } catch (err) {
+    } catch (error) {
       return [{
         error: true,
-        message: err.message
+        message: error.message
       }]
     }
   }
@@ -35,10 +35,10 @@ class StudentService {
 
     try {
       return await axios.get(url).then(response => response.data).catch(error => error.response.data)
-    } catch (err) {
+    } catch (error) {
       return [{
         error: true,
-        message: err.message
+        message: error.message
       }]
     }
   }
@@ -49,10 +49,10 @@ class StudentService {
 
     try {
       return await axios.post(url, student).then(response => response.data).catch(error => error.response.data)
-    } catch (err) {
+    } catch (error) {
       return [{
         error: true,
-        message: err.message
+        message: error.message
       }]
     }
   }
@@ -63,10 +63,10 @@ class StudentService {
 
     try {
       return await axios.put(url, student).then(response => response.data).catch(error => error.response.data)
-    } catch (err) {
+    } catch (error) {
       return [{
         error: true,
-        message: err.message
+        message: error.message
       }]
     }
   }
@@ -77,10 +77,10 @@ class StudentService {
 
     try {
       return await axios.delete(url).then(response => response.data).catch(error => error.response.data)
-    } catch (err) {
+    } catch (error) {
       return [{
         error: true,
-        message: err.message
+        message: error.message
       }]
     }
   }

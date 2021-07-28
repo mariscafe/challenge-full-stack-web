@@ -102,7 +102,7 @@ export default {
   }),
   methods: {
     validate () {
-      if(this.$refs.form.validate()){
+      if (this.$refs.form.validate()) {
         this.save(this.student.cpf)
       }
     },
@@ -110,17 +110,17 @@ export default {
       try{
         const response = await StudentService.findStudents(cpf)
 
-        if(response.error){
+        if (response.error) {
           this.$refs.alert.show('error', response.message)
         } else {
-          this.student = response.data[0]
+          this.student = response.data
         }
       }
-      catch(err){
-        this.$refs.alert.show('error', err.message)
+      catch (error) {
+        this.$refs.alert.show('error', error.message)
       }
     },
-    async cancel() {
+    async cancel () {
       if (
         await this.$refs.confirm.open(
           "Cancelar",
@@ -130,33 +130,33 @@ export default {
         this.navegateTo('studentsGrid')
       }
     },
-    async save(cpf) {
+    async save (cpf) {
       try{
-        if(this.edit === true){
+        if (this.edit === true) {
           const response = await StudentService.updateStudent(cpf, this.student)
 
-          if(response.error){
+          if (response.error) {
             this.$refs.alert.show('error', response.message)
           } else {
             this.$refs.alert.show('success', 'Registro atualizado com sucesso')
           }
-        } else{
+        } else {
           const response = await StudentService.insertStudent(this.student)
 
-          if(response.error){
+          if (response.error) {
             this.$refs.alert.show('error', response.message)
           } else {
             this.edit = true
             this.$refs.alert.show('success', 'Registro inserido com sucesso')
           }
         }
-      } catch(err){
-        this.$refs.alert.show('error', err.message)
+      } catch (error) {
+        this.$refs.alert.show('error', error.message)
       }
     },
   },
   mounted () {
-    if(this.$route.params.cpf){
+    if (this.$route.params.cpf) {
       this.edit = true
       this.loadStudent(this.$route.params.cpf)
     }
