@@ -11,18 +11,18 @@ class Database {
   }
 
   async init () {
-    try {
-      await new Sequelize(dbconfig).authenticate()
-      console.log('Connection to database has been established successfully.')
-
-      this.sequelize = new Sequelize(dbconfig)
+    try{
+      this.sequelize = await new Sequelize(dbconfig)
       models.map(model => model.init(this.sequelize))
 
       this.sequelize.sync()
-    } catch (error) {
-      console.error('Unable to connect to the database:', error.message)
+
+      console.log('Connection has been established successfully.')
+    }
+    catch(error){
+      console.error('Unable to connect to the database:', error)
     }
   }
 }
 
-module.exports = new Database()
+module.exports = Database

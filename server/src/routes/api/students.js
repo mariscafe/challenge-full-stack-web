@@ -1,7 +1,7 @@
 const express = require('express')
 const studentsRouter = express.Router()
 
-const StudentsController = require('../../controllers/student.controller.js')
+const StudentsController = require('../../controllers/student.controller')
 
 studentsRouter.get('/list', StudentsController.list)
 studentsRouter.get('/find/:cpf', StudentsController.find)

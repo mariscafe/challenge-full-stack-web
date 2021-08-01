@@ -1,12 +1,11 @@
 const express = require('express')
 const cors = require('cors')
 
-require('./config/database')
-
 const studentsRouter = require('./routes/api/students')
 
 class App {
-  constructor () {
+  constructor (Database) {
+    this.database = new Database()
     this.app = express()
 
     this.middlewares()
@@ -31,4 +30,4 @@ class App {
   }
 }
 
-module.exports = new App().app
+module.exports = App

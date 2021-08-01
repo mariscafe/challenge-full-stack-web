@@ -10,12 +10,12 @@ class StudentsController {
         ]
       })
       .then(students => {
-        res.status(200).json({
+        return res.status(200).json({
           data: students
         })
       })
       .catch(error => {
-        res.status(500).json({
+        return res.status(500).json({
           error: {
             message: error.message || 'An error occurred while executing the application api.'
           }
@@ -29,12 +29,12 @@ class StudentsController {
     await StudentModel
       .findByPk(cpf)
       .then(student => {
-        res.status(200).json({
+        return res.status(200).json({
           data: student || {}
         })
       })
       .catch(error => {
-        res.status(500).json({
+        return res.status(500).json({
           error: {
             message: error.message || 'An error occurred while executing the application api.'
           }
@@ -74,12 +74,12 @@ class StudentsController {
         ]
       })
       .then(students => {
-        res.status(200).json({
+        return res.status(200).json({
           data: students
         })
       })
       .catch(error => {
-        res.status(500).json({
+        return res.status(500).json({
           error: {
             message: error.message || 'An error occurred while executing the application api.'
           }
@@ -91,7 +91,7 @@ class StudentsController {
     const studentDTO = req.body
 
     if (!studentDTO.cpf || !studentDTO.name || !studentDTO.email || !studentDTO.register) {
-      res.status(400).json({
+      return res.status(400).json({
         error: {
           message: 'Body missing fields'
         }
@@ -101,10 +101,10 @@ class StudentsController {
     await StudentModel
       .create(studentDTO)
       .then(student => {
-        res.status(201).json({ data: student })
+        return res.status(201).json({ data: student })
       })
       .catch(error => {
-        res.status(500).json({
+        return res.status(500).json({
           error: {
             message: error.message || 'An error occurred while executing the application api.'
           }
@@ -117,7 +117,7 @@ class StudentsController {
     const studentDTO = req.body
 
     if (!studentDTO.cpf || !studentDTO.name || !studentDTO.email || !studentDTO.register) {
-      res.status(400).json({
+      return res.status(400).json({
         error: {
           message: 'Body missing fields'
         }
@@ -130,13 +130,13 @@ class StudentsController {
       })
       .then(count => {
         if (count === 1) {
-          res.status(200).json({ data: studentDTO })
+          return res.status(200).json({ data: studentDTO })
         } else {
-          res.status(200).json({ message: 'Student not found.' })
+          return res.status(200).json({ message: 'Student not found.' })
         }
       })
       .catch(error => {
-        res.status(500).json({
+        return res.status(500).json({
           error: {
             message: error.message || 'An error occurred while executing the application api.'
           }
@@ -153,13 +153,13 @@ class StudentsController {
       })
       .then(count => {
         if (count === 1) {
-          res.status(200).json({ message: 'Student deleted.' })
+          return res.status(200).json({ message: 'Student deleted.' })
         } else {
-          res.status(200).json({ message: 'Student not found.' })
+          return res.status(200).json({ message: 'Student not found.' })
         }
       })
       .catch(error => {
-        res.status(500).json({
+        return res.status(500).json({
           error: {
             message: error.message || 'An error occurred while executing the application api.'
           }

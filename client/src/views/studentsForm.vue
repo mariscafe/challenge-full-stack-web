@@ -111,7 +111,7 @@ export default {
         const response = await StudentService.findStudents(cpf)
 
         if (response.error) {
-          this.$refs.alert.show('error', response.message)
+          this.$refs.alert.show('error', response.error.message)
         } else {
           this.student = response.data
         }
@@ -136,7 +136,7 @@ export default {
           const response = await StudentService.updateStudent(cpf, this.student)
 
           if (response.error) {
-            this.$refs.alert.show('error', response.message)
+            this.$refs.alert.show('error', response.error.message)
           } else {
             this.$refs.alert.show('success', 'Registro atualizado com sucesso')
           }
@@ -144,7 +144,7 @@ export default {
           const response = await StudentService.insertStudent(this.student)
 
           if (response.error) {
-            this.$refs.alert.show('error', response.message)
+            this.$refs.alert.show('error', response.error.message)
           } else {
             this.edit = true
             this.$refs.alert.show('success', 'Registro inserido com sucesso')
